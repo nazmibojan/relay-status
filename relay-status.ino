@@ -11,13 +11,13 @@
 #define TXD2    17
 #define PERIOD  5000
 
-const char* ssid      = "CONNEXT-AXIATA";
-const char* password  = "4xiatadigitallabs18";
+const char* ssid      = "XL-Guest";
+const char* password  = "Pri[o]rita$";
 const char* ntp_server = "pool.ntp.org";
 
 unsigned long last_request = 0;
 const long gmt_offset_sec = 25200;
-const int daylight_offset_sec =0;
+const int daylight_offset_sec = 0;
 
 #ifdef SERIAL_EVENT
 String inputString = "";
@@ -58,24 +58,25 @@ void loop()
   if (millis() - last_request > PERIOD) {
     last_request = millis();
 
+    Serial.println("get_status");
     Serial2.write("get_status");
     Serial2.write('\r');
   }
 
-//#ifdef SERIAL_EVENT
-//  if (stringComplete) {
-//    Serial.println(inputString);
-//
-//    inputString = "";
-//    stringComplete = false;
-//    
-//  }
-//#else
-//  // Check data received from Arduino
-//  while (Serial2.available()) {
-//    Serial.print(char(Serial2.read()));
-//  }
-//#endif
+#ifdef SERIAL_EVENT
+  if (stringComplete) {
+    Serial.println(inputString);
+
+    inputString = "";
+    stringComplete = false;
+    
+  }
+#else
+  // Check data received from Arduino
+  while (Serial2.available()) {
+    Serial.print(char(Serial2.read()));
+  }
+#endif
 }
 
 #ifdef SERIAL_EVENT
